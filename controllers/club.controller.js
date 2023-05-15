@@ -1,7 +1,10 @@
 const Club = require("../models/Club");
 
 exports.addClub = async (req, res) => {
-    const { clubname, type, address, fee } = req.body;
+    const { clubname, type, address } = req.body;
+    const fee = parseInt(req.body.fee);
+
+    console.log(req.body);
 
     if (!clubname || typeof clubname !== 'string')
         return res.status(400).json({ message: 'Please provide a valid clubname' });
@@ -12,8 +15,9 @@ exports.addClub = async (req, res) => {
     if (!address || typeof address !== 'string')
         return res.status(400).json({ message: 'Please provide a valid address' });
 
-    if (!fee || typeof fee !== 'number' || fee < 0)
+    if (fee < 0) 
         return res.status(400).json({ message: 'Please provide a valid fee' });
+    
 
     try {
         const clubDetails = await Club.create({ clubname, type, address, fee });
